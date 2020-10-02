@@ -1,1 +1,69 @@
 # Maze-Solving
+This project involved creating two variations of maze solving algorithms, one using a Stack and one using a Queue.
+
+## Stack-based pathExists()
+The function pathExists() uses a stack to determine whether or not there's a path from the start to the finish point of a maze.
+
+The prototype of the function is:
+``` bool pathExists(string maze[], int nRows, int nCols, int sr, int sc, int er, int ec); ```
+The parameters are:
+*	maze: a rectangular maze of Xs and dots that represent the maze. Each string of the array is a row of the maze. Each ‘X’ represents a wall, and each ‘.’ represents a walkway.
+*	nRows: the number of rows in the maze.
+*	nCols: the number of columns in the maze.
+*	sr & sc: the starting coordinates in the maze; the row number is in the range 0 through nRows-1, and the column number is in the range 0 through nCols-1.
+*	er & ec: the ending coordinates in the maze; the row number is in the range 0 through nRows-1, and the column number is in the range 0 through nCols-1.
+
+The function uses a stack data structure, particularly, a stack of __Coords__, whose definition is:
+```
+class Coord
+{
+  public:
+    Coord(int rr, int cc) : m_r(rr), m_c(cc) {}
+    int r() const { return m_r; }
+    int c() const { return m_c; }
+  private:
+    int m_r;
+    int m_c;
+};
+```
+
+The pseudocode for the function is:
+```
+Push the starting coordinate (sr,sc) onto the coordinate stack and
+  update maze[sr][sc] to indicate that the algorithm has encountered
+  it (i.e., set maze[sr][sc] to have a value other than '.').
+While the stack is not empty,
+{
+  Pop the top coordinate off the stack. This gives you the current
+  (r,c) location that your algorithm is exploring.
+  
+  If the current (r,c) coordinate is equal to the ending coordinate,
+  then we've solved the maze so return true! 
+  
+  Else check each place you can move from the current cell as follows:
+    If you can move EAST and haven't encountered that cell yet,
+      then push the coordinate (r,c+1) onto the stack
+      update maze[r][c+1] to indicate the algorithm has encountered it.
+      
+    If you can move SOUTH and haven't encountered that cell yet,
+      then push the coordinate (r+1,c) onto the stack
+      update maze[r+1][c] to indicate the algorithm has encountered it.
+                
+    If you can move WEST and haven't encountered that cell yet,
+      then push the coordinate (r,c-1) onto the stack 
+      update maze[r][c-1] to indicate the algorithm has encountered it.
+                
+    If you can move NORTH and haven't encountered that cell yet,
+      then push the coordinate (r-1,c) onto the stack
+      update maze[r-1][c] to indicate the algorithm has encountered it.
+}
+There was no solution, so return false
+```
+
+The function makes the following simplifying assumptions:
+*	the maze array contains nRows rows (you couldn’t check for this anyway)
+*	each string in the maze is of length nCols
+*	the maze contains only Xs and dots when passed into the function
+*	the top and bottom rows of the maze contain only Xs, as do the left and right columns
+*	sr and er are between 0 and nRows*1. And sc and ec are between 0 and nCols*1
+*	maze[sr][sc] and maze[er][ec] are ‘.’s, i.e. not walls
