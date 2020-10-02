@@ -67,3 +67,21 @@ The function makes the following simplifying assumptions:
 *	the top and bottom rows of the maze contain only Xs, as do the left and right columns
 *	sr and er are between 0 and nRows*1. And sc and ec are between 0 and nCols*1
 *	maze[sr][sc] and maze[er][ec] are ‘.’s, i.e. not walls
+
+## Queue-based pathExists
+This version of pathExists() uses a Queue to determine whether or not there's a part from the start to the end of the maze.
+
+The prototype for the function is identical.
+
+The implementation of this version of the function uses a queue, particulary, a queue of __Coords__ (with the same definition as above).
+
+The pseudocode for the function is identical, apart from the terminology where:
+* Pushing a Coord onto the stack == enqueuing a Coord
+* Popping a Coord off the top of the stack == dequeuing a Coord
+
+## Difference?
+The main difference between the two algorithms is the way in which they explore the possible paths presented to them. The stack algorithm fully explores one pathway before it moves onto another, whereas the queue algorithm visits each of the possible pathways it sees in a circuit-like fashion.
+
+The reason for this variance in algorithm is down to the nature of the data structure. Because a stack is a first-in-last-out algorithm: pushing a Coord onto it will lead to the algorithm exploring that same Coord moments later, and this is especially apparent when the algorithm is moving through a pathway in which you can only go one direction; i.e. it snakes all the way through the path first, before going back to another option. Because of this behaviour, it is a depth-first search, choosing to fully explore a solution to see if it will work, before moving on to an alternative.
+
+On the other hand, a queue is a first-in-first-out algorithm: enqueueing a Coord into it will lead to the algorithm exploring that same Coord after it has also explored sections of the other possible options around it (i.e. the already queued coordinates, because that enqueued Coord will be at the back of the queue). This is most apparent in the way that the Coords it is analysing ‘jump around’ the maze between each of the possible pathways there are. Because of this behaviour, it is a breadth-first search, choosing to focus on exploring all possible options, albeit at a more surface level, at the same time.
